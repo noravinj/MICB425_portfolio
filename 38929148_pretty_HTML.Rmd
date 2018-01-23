@@ -1,0 +1,72 @@
+---
+title: "pretty_HTML"
+author: "Polina Beskrovnaya (38929148)"
+date: "version `r format(Sys.time(), '%B %d, %Y')`"
+output: html_document
+---
+
+#R Markdown PDF Challenge
+This is my attempt at creating a pretty document in R Studio. I am sort of trying, but coding is very confusing. 
+
+*Here is a picture ~~I was forced to add~~ to distract you from my feeble attempts at coding:*
+
+![**Some comic.**](http://phdcomics.com/comics/archive/phd011718s.gif){width=70%}
+
+*And here is a comic I like a little bit more:*
+
+![**A slightly more relatable comic...**](http://phdcomics.com/comics/archive/phd101609s.gif){width=70%}
+
+**Both comics were taken from** [**PhD Comics.**](http://phdcomics.com)
+
+###I am not sure I am enjoying this assignment yet.
+
+And my feelings deserve a whole separate section. You may even have noticed that this is under a **different** level header.
+
+And since we are sharing comics, I want to make room for one more:
+
+![[Explosm.net](http://explosm.net)](http://files.explosm.net/comics/Rob/housefiah.png){width=70%}
+
+##Mathy header. 
+
+I'm not sure why we are doing math, but:
+
+```{r}
+666+13131313131313134
+```
+
+**Wow, this worked!** I am shocked it^actually^ worked...
+
+###Why I am taking this class:
+
+```{r}
+dat<- data.frame(t=seq(0, 2*pi, by=0.1) )
+ xhrt <- function(t) 16*sin(t)^3
+ yhrt <- function(t) 13*cos(t)-5*cos(2*t)-2*cos(3*t)-cos(4*t)
+ dat$y=yhrt(dat$t)
+ dat$x=xhrt(dat$t)
+ with(dat, plot(x,y, type="l", xlab="Me", ylab="Bacteria"))
+```
+
+Is it bad that I took pretty codes from [somewhere?](https://stackoverflow.com/questions/8082429/plot-a-heart-in-r)
+
+##Here is a table:
+```{r}
+library(knitr)
+kable(summary(cars),caption="I made this table with kable in the knitr package library, but I'm not sure why")
+```
+
+###Here's another table:
+
+Organism   | Level of coolness(%)
+---------  |------------------
+Human      | 0
+Giraffe    | 75
+Polar bear | 100
+Prokaryote | 100
+
+
+##The big finale.
+
+This gif sums up me vs. all the assignment deadlines and grad school application process this semester:
+
+![](https://media.giphy.com/media/ZQ6YRgFGqZ9xC/giphy.gif)
