@@ -1,0 +1,557 @@
+---
+title: "MICB425 portfolio"
+author: "Polina Beskrovnaya (38929148)"
+date: "version `r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  html_document:
+    toc: true
+ 
+---
+# Module 01 - Origins and Earth Systems
+
+
+## Data science Friday
+### Installation check
+Space for installation screenshots:
+![Installation screenshot 1](1.jpg)
+![Installation screenshot 2](2.jpg)
+
+
+### Portfolio repo setup
+**code you used to create, initialize, and push your portfolio repo to GitHub:**
+
+cd ~/Documents/MICB425_portfolio
+
+git init
+
+git add .
+
+git commit -m "First commit"
+
+git remote add origin https://remote_repository_URL
+
+git remote -v
+
+git push -u origin master
+
+### RMarkdown pretty PDF challenge
+**Paste your code from the in-class activity of recreating the example PDF:**
+
+This is my attempt at creating a pretty document in R Studio. I am sort of trying, but coding is very confusing. 
+
+The following assignment is an exercise for the reproduction of this .html document using the RStudio and RMarkdown tools we?ve shown you in class. Hopefully by the end of this, you won?t feel at all the way this poor PhD student does. We?re here to help, and when it comes to R, the internet is a really valuable resource. This open-source program has all kinds of tutorials online.
+
+*Here is a picture ~~I was forced to add~~ to distract you from my feeble attempts at coding:*
+
+![**Some comic.**](http://phdcomics.com/comics/archive/phd011718s.gif){width=70%}
+
+*And here is a comic I like a little bit more:*
+
+![**A slightly more relatable comic...**](http://phdcomics.com/comics/archive/phd101609s.gif){width=70%}
+
+**Both comics were taken from** [**PhD Comics.**](http://phdcomics.com)
+
+####Challenge Goals
+
+The goal of this R Markdown html challenge is to give you an opportunity to play with a bunch of different RMarkdown formatting. Consider it a chance to flex your RMarkdown muscles. Your goal is to write your own RMarkdown that rebuilds this html document as close to the original as possible. So, yes, this means you get to copy my irreverant tone exactly in your own Markdowns. It?s a little window into my psyche. Enjoy =)
+
+**hint: go to the [PhD Comics website](http://phdcomics.com) to see if you can find the image above**
+*If you can?t find that exact image, just find a comparable image from the PhD Comics website and include it in your markdown*
+
+#####I am not sure I am enjoying this assignment yet.
+
+And my feelings deserve a whole separate section. You may even have noticed that this is under a **different** level header.
+
+And since we are sharing comics, I want to make room for one more:
+
+![[Explosm.net](http://explosm.net)](http://files.explosm.net/comics/Rob/housefiah.png){width=70%}
+
+####Here's a header! Mathy header. 
+
+Let?s be honest, this header is a little arbitrary. But show me that you can reproduce headers with different levels please. This is a level 3 header, for your reference (you can most easily tell this from the table of contents).
+
+#####Another header, now with maths
+
+Perhaps you?re already really confused by the whole markdown thing. Maybe you?re so confused that you?ve forgotton how to add. Never fear! ~~A calculator~~ R is here:
+
+I'm not sure why we are doing math, but:
+
+```{r}
+666+13131313131313134
+```
+
+**Wow, this worked!** I am shocked it^actually^ worked...
+
+####Why I am taking this class:
+
+```{r}
+dat<- data.frame(t=seq(0, 2*pi, by=0.1) )
+ xhrt <- function(t) 16*sin(t)^3
+ yhrt <- function(t) 13*cos(t)-5*cos(2*t)-2*cos(3*t)-cos(4*t)
+ dat$y=yhrt(dat$t)
+ dat$x=xhrt(dat$t)
+ with(dat, plot(x,y, type="l", xlab="Me", ylab="Bacteria"))
+```
+
+Is it bad that I took pretty codes from [somewhere?](https://stackoverflow.com/questions/8082429/plot-a-heart-in-r)
+
+####Here is a table:
+
+Or maybe, after you?ve added those numbers, you feel like it?s about time for a table!
+I?m going to leave all the guts of the coding here so you can see how libraries (R packages) are loaded into R (more on that later). It?s not terribly pretty, but it hints at how R works and how you will use it in the future. The summary function used below is a nice data exploration function that you may use in the ^future^.
+```{r}
+library(knitr)
+kable(summary(cars),caption="I made this table with kable in the knitr package library, but I'm not sure why")
+```
+
+####Here's another table:
+
+Organism   | Level of coolness(%)
+---------  |------------------
+Human      | 0
+Giraffe    | 75
+Polar bear | 100
+Prokaryote | 100
+
+
+####The big finale.
+
+This gif sums up me vs. all the assignment deadlines and grad school application process this semester:
+
+![](https://media.giphy.com/media/ZQ6YRgFGqZ9xC/giphy.gif)
+
+
+###ggplot exercises
+Code pasted here:
+
+```{r}
+library(tidyverse)
+library(phyloseq)
+```
+
+```{r}
+read.table(file="Saanich.metadata.txt", header=TRUE, row.names=1, sep="\t", na.strings="NAN")
+metadata = read.table(file="Saanich.metadata.txt", header=TRUE, row.names=1, sep="\t")
+load("phyloseq_object.RData")
+
+#The base function of any plot from ggplot is unsurprisingly the ggplot function. 
+#This function takes in the data and basic aesthetics of the plot, 
+#like the x- and y-axis variables, but does not specify the way 
+#in which you want to plot the data (like dots, bars, etc.). 
+#So, if we try to plot depth by oxygen (O2) with just ggplot, 
+#we get a plot with the correct axes but no actual data.
+ggplot(metadata, aes(x=O2_uM, y=Depth_m))
+
+#To add in the data, we must specify a geom. To get a dot plot, we will use geom_point
+ggplot(metadata, aes(x=O2_uM, y=Depth_m)) +
+  geom_point()
+
+#So, the above is equivalent to
+ggplot(metadata) +
+  geom_point(aes(x=O2_uM, y=Depth_m))
+
+#We can change the color (outline and fill), shape, or size of our points
+ggplot(metadata, aes(x=O2_uM, y=Depth_m, color="blue")) +
+  geom_point()
+
+#But wait! That’s not blue! What happened?
+#Within ggplot, you can specify attributes that are part of the overall plot 
+#(everything that shows up if you only use ggplot, no geom) 
+#but not attributes associated with a specific geom. 
+#In this case, the dots are there because of geom_point 
+#so we must change their color within the geom function.
+ggplot(metadata, aes(x=O2_uM, y=Depth_m)) +
+  geom_point(color="blue")
+
+#The same holds for changing shape and size such as in
+ggplot(metadata, aes(x=O2_uM, y=Depth_m)) +
+  geom_point(shape="square")
+ggplot(metadata, aes(x=O2_uM, y=Depth_m)) +
+  geom_point(size=10)
+
+#Let’s see if the oxygen measurement in volts correlates with measurements in μμM. 
+#In this case, we will need a legend, which is part of the base ggplot 
+#so we must include size within the geom instead of the base ggplot. 
+ggplot(metadata, aes(x=O2_uM, y=Depth_m, size=OxygenSBE_V)) +
+  geom_point()
+
+#Exercise 1
+#Plot another nutrient of your choice against depth. 
+#Change the points to be purple triangles.
+ggplot(metadata, aes(x=Fluorescence_mgm_3, y=Depth_m)) +
+  geom_point(color="purple", shape=17,size=3)
+
+#Exercise 2
+#Using dplyr, convert the temperature variable from Celsius to Fahrenheit. 
+#Then create a dot plot of temperature in Fahrenheit against depth.
+#Step 1: find name of column with temperature values
+metadata %>% 
+  select(matches("Temp"))
+#Step 2: mutate values celsius->farenheit and show graph
+#My attempt
+metadata %>%
+  mutate(Temperature_F=(Temperature_C*1.8)+32) %>%
+  ggplot(aes(x=Temperature_F, y=Depth_m)) +
+  geom_point()
+
+#I first couldn't figure out how to save mutated variable so it could be used for plot...
+#So I made the plot like this:
+ggplot(metadata, aes(x=Temperature_C*1.8+32, y=Depth_m)) +
+  geom_point() +
+  xlab("Temperature_F")
+
+#ggplot with phyloseq
+physeq
+#phyloseq plot functions mirror ggplot like plot_bar = geom_bar. 
+#For example, we can plot the phylum level communities by depth 
+#by simply specifying the fill.
+plot_bar(physeq, fill="Phylum")
+#we can calculate a percentage of the total of each sample for each OTU 
+#with the following. The function applies the equation we give it 
+#(100*x/sum(x)) to every cell in our OTU table
+physeq_percent = transform_sample_counts(physeq, function(x) 100 * x/sum(x))
+plot_bar(physeq_percent, fill="Phylum")
+#To get rid of black lines:
+plot_bar(physeq_percent, fill="Phylum") + 
+  geom_bar(aes(fill=Phylum), stat="identity")
+
+#Exercise 3
+#Create a bar plot at a different taxonomic level 
+#with more descriptive x- and y-axis labels as well as a title. 
+plot_bar(physeq_percent, fill="Order") + 
+  geom_bar(aes(fill=Order), stat="identity") +
+  ggtitle("Orders from 10 to 200 m in the Saanich Inlet") +
+  ylab("Percent relative abundance") + xlab("Sample depth")
+
+#Faceting
+#some low abundance taxa are so low that you can’t see them 
+#and some colors are so similar that it’s difficult to tell them apart.
+#separate it into multiple panels (or facets) to more clearly see patterns. 
+#Working from our previous bar plot, we simply add face_wrap 
+#and tell it what variable to separate by
+plot_bar(physeq_percent, fill="Phylum") +
+  geom_bar(aes(fill=Phylum), stat="identity") +
+  facet_wrap(~Phylum)
+#We can let R scale independently in each panel with the scales parameter like so.
+#We also don’t really need a legend anymore because each facet it labeled. 
+#So we can remove this in the theme.
+plot_bar(physeq_percent, fill="Phylum") +
+  geom_bar(aes(fill=Phylum), stat="identity") +
+  facet_wrap(~Phylum, scales="free_y") +
+  theme(legend.position="none")
+
+#Exercise 4
+#Using ggplot, create a faceted figure showing nutrient concentrations 
+#in uM for O2, PO4, SiO2, NO3, NH4, and NO2 by depth. 
+#For this, you can use either the metadata table or the phyloseq object.
+gather(metadata, key="nutrients", value="uM", O2_uM, PO4_uM, SiO2_uM, NO3_uM,NH4_uM, NO2_uM) %>%
+ggplot(aes(x=Depth_m, y=uM)) +
+  geom_path() + facet_grid(~nutrients)
+
+```
+
+## Evidence worksheets
+
+###Evidence worksheet 01 
+The template for the first Evidence Worksheet has been included here. The first thing for any assignment should link(s) to any relevant literature (which should be included as full citations in a module references section below).
+
+[Whitman *et al* 1998](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC33863/)
+
+#### Learning objectives
+Describe the numerical abundance of microbial life in relation to ecology and biogeochemistry of Earth systems. 
+
+#### General questions
+* What were the main questions being asked?
+1. What is the abundane of prokaryotes in different environments & their total abundance?
+2. How does C,N,P content of prokaryotes relate to that of plants, animals, etc.?
+3. What is the potential for prokaryotic genetic diversity?
+4. What are the different approaches for estimating abundances of prokaryotes? How do they compare? What are their limitations?
+
+* What were the primary methodological approaches used? 
+Cell counts from other studies + estimates based on volumes, area, etc. Extrapolation.
+
+* Summarize the main results or findings.  
+1. C pool of prokaryotes is almost as large as in plants.
+2. N,P more than in plants.
+3. Prokaryotes some of most abundant types of organisms in general + most abundant in some environments.
+4. Prokaryotes account for most 1' productivity in oceans.
+5. Abundance + mutation rates = potential for large unexplored genetic diversity.
+
+* Do new questions arise from the results?  
+1. How can we explore genetic diversity?
+2. How do we revise the definition of prokaryote species?
+3. Are estimates accurate? How can we check them?
+4. Are there biases, limitations, improvements possible?
+5. How do prokaryote numbers inside living organisms actually compare to non-living environments?
+6. Are there new estimates? Are they different?
+
+* Were there any specific challenges or advantages in understanding the paper (*e.g.* did the authors provide sufficient background information to understand experimental logic, were methods explained adequately, were any specific assumptions made, were conclusions justified based on the evidence, were the figures or tables useful and easy to understand)?  
+1. What is the significance of turnover rates?
+2. Species definition discussion was unexpected.
+3. No formulas provided.
+4. Not clear how exactly estimates were calculated.
+
+### Evidence worksheet 02
+
+[Nisbet & Sleep 2001](https://www.nature.com/articles/35059210)
+
+[Kasting & Siefert 2003](https://www.ncbi.nlm.nih.gov/pubmed/12004117)
+
+#### Learning objectives: 
+Comment on the emergence of microbial life and the evolution of Earth systems
+
+####Questions:
+* Indicate the key events in the evolution of Earth systems at each approximate moment in the time series. If times need to be adjusted or added to the timeline to fully account for the development of Earth systems, please do so. 
+
+    + 4.6 billion years ago  
+    Formation of Earth
+    
+    + 4.1 billion years ago  
+    Oldest record of life on Earth (fixed C in solid material)
+    
+    + 3.8 billion years ago 
+    Though to be when first life actually appeared (single-celled prokaryotes)
+    
+    + 3.75 billion years ago
+    Evidence of banded iron formations
+    
+    + 3.5 billion years ago 
+    Oldest fossil evidence of life in rock, measured by radiometric dating - microfossils. Photosynthesis emerged (oxygenic)
+    
+    + 3.0 billion years ago  
+    First continent formed
+    
+    + 2.7 billion years ago  
+    Cyanobacteria form oxygen-rich atmosphere
+    
+    + 2.2 billion years ago  
+    End of Great Oxidation Event
+    
+    + 2.1 billion years ago
+    Multicellularity emerges
+    
+    + 1.3 billion years ago
+    First plants appear
+    
+    + 550,000 years ago
+    Multicellular animals appear
+    
+    + 200,000 years ago
+    Mass extinction
+
+
+* Describe the dominant physical and chemical characteristics of Earth systems at the following waypoints:  
+
+    + Hadean  
+    High temperatures, sometimes enough to turn oceans to steam. Formation of atmosphere around Earth, depleted in oxygen but rich in CO2, methane, ammonia. Frequent asteroid bombardments. Chemistry dominated by volcanic activity -- "primeval soup".Sun was also dimmer and cooler
+    
+    + Archean  
+    Carbon fixed in rock as evidence of emergence of oxygenic photosynthesis. Oxygen concentrations rise in the atmosphere, but still not much. Formation of solid crust due to cooling of temperatures
+    
+    + Precambrian  
+    Atmosphere first composed of inert gases, CO2, ammonia, then enriched in oxygen once photosynthesis appears. Formation of crust, plate tectonics, continents. Banded iron formations appear
+    
+    + Proterozoic
+    Oxygen increasing in atmosphere, frequent glaciations. "Snowball Earth". Supercontinents and emergence of multicellular life.
+    
+    + Phanerozoic  
+    Tectonic activity and separation of supercontinents. Rapid evolution rates. Atmosphere similar to current and conditions overall as well are similar. Mass extinction events.
+    
+### Evidence worksheet 03
+
+[RockstrÖm 2009](https://www.nature.com/articles/461472a)
+
+#### Learning objectives: 
+Evaluate human impacts on the ecology and biogeochemistry of Earth systems
+
+####Questions:
+* What were the main questions being asked?
+
+* What were the primary methodological approaches used?
+
+* Summarize the main results or findings. 
+
+* Do new questions arise from the results?
+
+* Were there any specific challenges or advantages in understanding the paper (e.g. did the authors provide sufficient background information to understand experimental logic, were methods explained adequately, were any specific assumptions made, were conclusions justified based on the evidence, were the figures or tables useful and easy to understand)? 
+
+
+## Problem sets
+
+###Problem set 01
+
+[Whitman *et al* 1998](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC33863/)
+
+#### Learning objectives: 
+Describe the numerical abundance of microbial life in relation to the ecology and biogeochemistry of Earth systems.
+
+#### Specific questions:
+* What are the primary prokaryotic habitats on Earth and how do they vary with respect to their capacity to support life? Provide a breakdown of total cell abundance for each primary habitat from the tables provided in the text.  
+
+* What is the estimated prokaryotic cell abundance in the upper 200 m of the ocean and what fraction of this biomass is represented by marine cyanobacterium including Prochlorococcus? What is the significance of this ratio with respect to carbon cycling in the ocean and the atmospheric composition of the Earth?  
+
+* What is the difference between an autotroph, heterotroph, and a lithotroph based on information provided in the text?  
+
+* Based on information provided in the text and your knowledge of geography what is the deepest habitat capable of supporting prokaryotic life? What is the primary limiting factor at this depth?  
+
+* Based on information provided in the text your knowledge of geography what is the highest habitat capable of supporting prokaryotic life? What is the primary limiting factor at this height?  
+
+* Based on estimates of prokaryotic habitat limitation, what is the vertical distance of the Earth’s biosphere measured in km?  
+
+* How was annual cellular production of prokaryotes described in Table 7 column four determined? (Provide an example of the calculation)  
+
+* What is the relationship between carbon content, carbon assimilation efficiency and turnover rates in the upper 200m of the ocean? Why does this vary with depth in the ocean and between terrestrial and marine habitats?  
+
+* How were the frequency numbers for four simultaneous mutations in shared genes determined for marine heterotrophs and marine autotrophs given an average mutation rate of 4 x 10^-7^ per DNA replication? (Provide an example of the calculation with units. Hint: cell and generation cancel out)  
+
+* Given the large population size and high mutation rate of prokaryotic cells, what are the implications with respect to genetic diversity and adaptive potential? Are point mutations the only way in which microbial genomes diversify and adapt?  
+
+* What relationships can be inferred between prokaryotic abundance, diversity, and metabolic potential based on the information provided in the text? 
+
+### Problem set 02
+
+[Falkowski *et al.* 2008](https://www.ncbi.nlm.nih.gov/pubmed/18497287)
+
+#### Learning objectives: 
+Discuss the role of microbial diversity and formation of coupled metabolism in driving global biogeochemical cycles.
+
+#### Specific Questions:
+* What are the primary geophysical and biogeochemical processes that create and sustain conditions for life on Earth? How do abiotic versus biotic processes vary with respect to matter and energy transformation and how are they interconnected?  
+
+1. Geophysical: tectonics, atmospheric photochemical processes.
+    + Mostly based on acid-base chemistry
+    + Bond form and break in cyclical manner
+    + Resupply C, S, P
+    
+2. Biogeochemical: redox reactions involving major elements (C, H, O, N, S, P)
+    + Relatively limited set of chemical energy
+    + Coupled half-cells linked to elemental cycles
+    + Set lower limits on external energy
+
+* Why is Earth’s redox state considered an emergent property?
+
+    + biogeochemical rxns driven abiotically, rely on supply of elements from geophysical, but due to this allow for setting lower limites on external energy required to sustain elemental cycles --> stabilize Earth's redox state
+    + biological oxidation driven by photosynthesis --> feed cycles of elements that are maintained by forward-reverse redox
+  
+
+* How do reversible electron transfer reactions give rise to element and nutrient cycles at different ecological scales? What strategies do microbes use to overcome thermodynamic barriers to reversible electron flow?  
+
+Close association between organisms feeding the cycle, e.g. waste products of 1' producer used for energy by another organisms that produce waste, which serves as substrate for next --> remineralization.
+Shifting availability of substrates/products to make forward/reverse rxns thermodynamically favourable.
+
+* Using information provided in the text, describe how the nitrogen cycle partitions between different redox “niches” and microbial groups. Is there a relationship between the nitrogen cycle and climate change?  
+
+Conserved machinery in diverse taxa, specialized groups
+N fixation is diverse, but nitrification by bacteria and archaea --> anaerobic: oxidize organic matter into CO2, greenhouse gas released into atmosphere
+
+* What is the relationship between microbial diversity and metabolic diversity and how does this relate to the discovery of new protein families from microbial community genomes?  
+
+Subset of core conserved genes + environment-specific genes. Large unexplored sequence space creates illusion of limitless diversity, but new proteins aren't discovered as frequently. Functions and adaptations limited by protein-protein or protein-nucleic acid interactions and biochemistry in general.
+
+* On what basis do the authors consider microbes the guardians of metabolism?  
+
+Functional units of the pathway can go extinct, but the process survives. Some organisms under the right conditions store/utilize pathway or its steps with a chance to pass it on to other organisms by HGT
+
+##Writing assignment 1
+
+
+
+
+## Module 01 references
+Whitman WB, Coleman DC, and Wiebe WJ. 1998. Prokaryotes: The unseen majority. Proc Natl Acad Sci USA. 95(12):6578–6583.  [PMC33863](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC33863/)
+
+#Module 02
+
+##Evidence worksheets 
+
+###Evidence worksheet 04
+
+[Martinez *et al.* 2007](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1838496/)
+
+####Learning objectives:
+
+* Discuss the relationship between microbial community structure and metabolic diversity
+
+* Evaluate common methods for studying the diversity of microbial communities
+
+* Recognize basic design elements in metagenomic workflows
+
+####Questions:
+* What were the main questions being asked?
+  1. Can PR system be expressed in *E. coli* to allow for use of light for energy?
+  2. What affects wide taxonomic distribution of PR?
+  3. What are functions of PR system *in vivo* & how are they different from what was predicted?
+  
+* What were the primary methodological approaches used?
+  1. Functional screening from a fosmid library generated from environmental sample of phytoplankton
+  2. HPLC to find expressed photsynthetic pigments
+  3. Analysis of proton pumping
+  4. Luciferase-based assay to measure ATP
+
+* Summarize the main results or findings. 
+  1. 2 clones with genetically distinct PR systems were expressed and identified in *E. coli*
+  2. Functions of system components and pathway products were elucidated
+  3. Evidence that a single HGT event can confer photosynthetic capabilities, which explains why PR is so widely distributed
+
+* Do new questions arise from the results?
+  1. How can we identify functional PR systems in environmental samples?
+  2. How much of PR system is exressed in bacteria that encode it?
+  3. Are there favourable genetic backgrounds for acquiring PR by HGT?
+  4. Why is PR more distributed in marine bacteria?
+  5. What activates PR expression?
+
+* Were there any specific challenges or advantages in understanding the paper (e.g. did the authors provide sufficient background information to understand experimental logic, were methods explained adequately, were any specific assumptions made, were conclusions justified based on the evidence, were the figures or tables useful and easy to understand)? 
+  1. How did they measure the proton pump? Hard to understand.
+
+## Problem sets
+
+###Problem set 03
+#### Learning objectives: 
+Specific emphasis should be placed on the process used to find the answer. Be as comprehensive as possible e.g. provide URLs for web sources, literature citations, etc.  
+
+#### Specific Questions:
+* How many prokaryotic divisions have been described and how many have no cultured representatives (microbial dark matter)?
+
+2016: 89 bacterial and 20 archaeal phyla, from 16S databases
+"Shadow biosphere" could contain up to 1500 bacterial phyla
+
+*another team found these numbers from somewhere, but I couldn't find exactly where from*
+  
+
+* How many metagenome sequencing projects are currently available in the public domain and what types of environments are they sourced from?
+
+Thousands available on many online metagenome databases, such as [*EBI*](https://www.ebi.ac.uk), which has 110217 projects currently.
+Pointless to establish a certain number, because it's always changing.
+Sourced from all environments, but esp. where it's hard to culture (gut, ocean, sediment, soil, etc.)
+  
+
+* What types of on-line resources are available for warehousing and/or analyzing environmental sequence information (provide names, URLS and applications)?  
+
+1. Shotgun metagenomics:
+  EULER (assembly), S-GCOM (binning), KEGG (annotation), Megan 5 (analysis pipelines)
+  
+2. Marker gene metagenomics:
+  OTU base (standalone software), SILVA (analysis pipelines), Amplicon Noise (denoising), RDP (databases)
+  
+NCBI, MG-RAST
+
+* What is the difference between phylogenetic and functional gene anchors and how can they be used in metagenome analysis?   
+
+    + Phylogenetic:
+    Vertical gene transfer, taxonomic, ideally single-copy; Carry phylogenetic information allowing tree reconstruction.
+    
+    + Functional:
+    more HGT, not as useful for phylogeny. Identify specific biochemical functions associated with measurable effects.
+
+* What is metagenomic sequence binning? What types of algorithmic approaches are used to produce sequence bins? What are some risks and opportunities associated with using sequence bins for metabolic reconstruction of uncultivated microorganisms?  
+
+= grouping sequences from a single genome. align sequences to databases --> group together based on DNA characteristics. Unfortunately, prone to contamination from different phylogeny, arbitrary, incomplete genome coverage.
+
+* Is there an alternative to metagenomic shotgun sequencing that can be used to access the metabolic potential of uncultivated microorganisms? What are some risks and opportunities associated with this alternative?  
+
+1. Functional screens (can be hard to express, find host)
+2. 3rd gen sequencing (nanopore)
+3. Single-cell sequencing
+4. FISH probe
+
+## Module 02 references
